@@ -81,5 +81,4 @@ public class HocSinh {
         thongTin += "Năm sinh: " + this.getNamSinh() + "\n";
         return thongTin;
     }
-
 }
