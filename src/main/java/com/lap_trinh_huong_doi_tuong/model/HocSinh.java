@@ -1,5 +1,7 @@
 package com.lap_trinh_huong_doi_tuong.model;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HocSinh {
@@ -80,5 +82,83 @@ public class HocSinh {
         thongTin += "Điểm trung bình: " + this.getDiemTrungBinh() + "\n";
         thongTin += "Năm sinh: " + this.getNamSinh() + "\n";
         return thongTin;
+    }
+    private String XepLoai() {
+        if (this.DiemTrungBinh < 5) {
+            return "Yếu";
+        } else if (this.DiemTrungBinh <= 7) {
+            return "Khá";
+        } else {
+            return "Giỏi";
+        }
+    }
+    public static ArrayList<HocSinh> XepLoai(ArrayList<HocSinh> ds) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Chọn loại cần lọc:");
+        System.out.println("1. Yếu");
+        System.out.println("2. Khá");
+        System.out.println("3. Giỏi");
+        System.out.print("Nhập lựa chọn (1-3): ");
+
+        int choice = sc.nextInt();
+        String loai = "";
+
+        switch (choice) {
+            case 1:
+                loai = "Yếu";
+                break;
+            case 2:
+                loai = "Khá";
+                break;
+            case 3:
+                loai = "Giỏi";
+                break;
+            default:
+                System.out.println("Lựa chọn không hợp lệ!");
+                return new ArrayList<>(); // trả về rỗng nếu sai
+        }
+
+        ArrayList<HocSinh> ketQua = new ArrayList<>();
+        for (HocSinh hs : ds) {
+            if (hs.XepLoai().equalsIgnoreCase(loai)) {
+                ketQua.add(hs);
+            }
+        }
+        System.out.println("\n===== DANH SÁCH HỌC SINH " + loai.toUpperCase() + " =====");
+        if (ketQua.isEmpty()) {
+            System.out.println("⚠️ Không có sinh viên nào thuộc loại " + loai + ".");
+        } else {
+            for (HocSinh hs : ketQua) {
+                System.out.println(hs.InThongTinSinhVien());
+            }
+        }
+        return ketQua;
+    }
+
+    public static void DoiTen(ArrayList<HocSinh> hocSinhs){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nhập mã số sinh viên: ");
+        String mssv = sc.nextLine();
+
+        boolean isTonTai = false;
+        for(HocSinh hs : hocSinhs){
+            if(hs.getMSSV().equalsIgnoreCase(mssv)){
+                System.out.println("✅ Tìm thấy sinh viên:");
+                System.out.println(hs.InThongTinSinhVien());
+
+                System.out.println("Nhập tên mới: ");
+                String tenMoi = sc.nextLine();
+
+                hs.setHoTen(tenMoi);
+                System.out.println("🎉 Đổi tên thành công!");
+                System.out.println("Thông tin sau khi đổi:");
+                System.out.println(hs.InThongTinSinhVien());
+                isTonTai = true;
+                break;
+            }
+        }
+        if (!isTonTai) {
+            System.out.println("❌ Không tìm thấy sinh viên có MSSV = " + mssv);
+        }
     }
 }
